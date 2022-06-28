@@ -1,3 +1,19 @@
-FROM debian:11
-COPY ./sql /var/lib/mysql
-RUN apt update && timedatectl set-timezone Europe/Minsk && apt install -y apache2 mariadb-server php libapache2-mod-php php-mysql lsb-release gnupg2 && touch /etc/apt/sources.list.d/zoneminder.list && chmo>
+#FROM debian:11
+#COPY ./sql /var/lib/mysql
+#RUN apt update && timedatectl set-timezone Europe/Minsk && apt install -y apache2 mariadb-server php libapache2-mod-php php-mysql lsb-release gnupg2 && touch /etc/apt/sources.list.d/zoneminder.list && chmo>
+
+FROM debian:stable
+ENV TZ="Europe/Minsk"
+#ENV DEBIAN_FRONTEND=noninteractive
+RUN chmod o+r /etc/resolv.conf && apt-get update && apt-get install -y gnupg apt-transport-https  wget ca-certificates; echo "deb [trusted=yes] https://zmrep>
+#RUN touch /etc/apt/sources.list.d/zoneminder.list && chmod ugo+w /etc/apt/sources.list.d/zoneminder.list && echo "deb https://zmrepo.zoneminder.com/debian/r>
+#RUN wget -O - https://zmrepo.zoneminder.com/debian/archive-keyring.gpg | apt-key add - &&  apt-get update && apt-get install -y zoneminder=1.36.11-bullseye1>
+#RUN apt-get remove wget && apt-get clean
+VOLUME /var/cache/zoneminder/events /var/cache/zoneminder/images /var/lib/mysql /var/log/zm
+#EXPOSE 80
+CMD service apache2 reload
+#RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server zoneminder
+#RUN mariadb CREATE DATABASE zm; CREATE USER zmuser@localhost IDENTIFIED BY 'zmpass'; GRANT ALL ON zm.* TO zmuser@localhost; FLUSH PRIVILEGES; exit;
+#RUN mariadb -u zmuser -p zmpass < /usr/share/zoneminder/db/zm_create.sql
+#RUN chgrp -c www-data /etc/zm/zm.conf && a2enconf zoneminder && service apache2.service reload && service zoneminder.service reload && service zoneminder.se>
+#CMD apt-get clean
